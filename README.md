@@ -1,5 +1,7 @@
 # SnapURL — Java/Spring Boot URL Shortener
 
+Live Deployed URL: https://snapurl.hatchable.site/
+
 GitHub-ready version of the SnapURL project. The UI is kept in `src/main/resources/static` and the backend is Java 17 + Spring Boot + Spring Data JPA + PostgreSQL + Flyway.
 
 ## Features
