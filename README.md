@@ -31,7 +31,8 @@ Or package it with `mvn clean package` and run `java -jar target/snapurl-1.0.0.j
 - `POST /api/toggle`
 - `POST /api/delete`
 - `GET /api/health`
-- `GET /api/redirect/{code}`
+- `GET /s/{code}` — browser-friendly short-link redirect
+- `GET /api/redirect/{code}` — API-compatible redirect
 
 ## Interview talking points
 - Why Repository? Keeps persistence concerns out of business logic.
@@ -39,3 +40,7 @@ Or package it with `mvn clean package` and run `java -jar target/snapurl-1.0.0.j
 - Why a DB unique constraint? Application checks alone are unsafe under concurrency.
 - Why not microservices? A modular monolith is enough for the current scope; split services when scaling/ownership requires it.
 - Production next steps: Redis for hot redirects, rate limiting, authentication, async click events, metrics, and horizontal scaling.
+
+
+## Deployment
+The public demo is deployed on Hatchable. The Java/Spring Boot implementation in this repository is the source-of-truth backend implementation for local/Docker/VPS deployment.
