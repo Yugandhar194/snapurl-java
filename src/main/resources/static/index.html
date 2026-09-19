@@ -7,7 +7,7 @@
     <meta name="description"
         content="SnapURL — fast, friendly URL shortening with custom aliases and lightweight analytics.">
     <title>SnapURL — URL shortener</title>
-    <link rel="stylesheet" href="theme.css">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/theme.css">
 </head>
 
 <body>
@@ -74,7 +74,7 @@
                     <div>
                         <h2>Your links</h2>
                         <p class="section-sub">Saved locally so you can manage links created from this browser.</p>
-                    </div><span class="code-chip">localStorage → manage token</span>
+                    </div>
                 </div>
                 <div class="links-panel" id="linksPanel">
                     <div class="empty" id="emptyState"><strong>No links yet.</strong>
@@ -121,7 +121,7 @@
         </footer>
     </div>
     <div class="toast" id="toast"></div>
-    <script src="/app.js"></script>
+    <script src="/app.js"></script><script>document.getElementById("currentYear").textContent=new Date().getFullYear();</script>
 </body>
 
 </html>
