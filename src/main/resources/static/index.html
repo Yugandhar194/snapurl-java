@@ -83,6 +83,8 @@
                     <div id="linkList"></div>
                 </div>
             </section>
+
+            <section class="section tools-section" id="tools"><div class="section-head"><div><h2>Useful file tools</h2><p class="section-sub">Quick browser-side utilities — your files stay on your device.</p></div></div><div class="tool-grid"><article class="tool-card"><div class="tool-icon"><img src="/word-icon.svg" alt="Word"></div><h3>Word → PDF</h3><p>Convert a .docx document into a downloadable PDF.</p><input id="wordToPdfInput" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"><button class="small-btn" id="wordToPdf" type="button">Convert to PDF</button><div class="tool-output" id="wordPdfOutput"></div></article><article class="tool-card"><div class="tool-icon"><img src="/pdf-icon.svg" alt="PDF"></div><h3>PDF → Word</h3><p>Extract text from a PDF and create an editable .docx file.</p><input id="pdfToWordInput" type="file" accept="application/pdf"><button class="small-btn" id="pdfToWord" type="button">Convert to Word</button><div class="tool-output" id="pdfWordOutput"></div></article><article class="tool-card"><div class="tool-icon">IMG</div><h3>Image Compressor</h3><p>Reduce image size and download a compressed copy.</p><input id="imageInput" type="file" accept="image/*"><div class="tool-controls"><label>Quality <input id="imageQuality" type="range" min="20" max="95" value="75"><span id="imageQualityValue">75%</span></label></div><button class="small-btn" id="compressImage" type="button">Compress image</button><div class="tool-output" id="imageOutput"></div></article></div></section>
             <section class="section">
                 <div class="section-head">
                     <div>
@@ -121,7 +123,7 @@
         </footer>
     </div>
     <div class="toast" id="toast"></div>
-    <script src="/app.js"></script><script>document.getElementById("currentYear").textContent=new Date().getFullYear();</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/docx/9.5.1/docx.umd.js"></script><script src="/app.js"></script>
 </body>
 
 </html>
