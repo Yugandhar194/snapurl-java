@@ -236,7 +236,7 @@ $("#shortenForm").onsubmit = async (event) => {
       method: "POST",
       body: JSON.stringify({
         url: $("#url").value,
-        title: $("#title").value,
+        alias: $("#alias").value,
         expiresInDays: $("#expiry").value
           ? Number($("#expiry").value)
           : null,
