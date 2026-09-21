@@ -46,7 +46,7 @@ function showToast(message) {
 
 async function copyText(value) {
   await navigator.clipboard.writeText(value);
-  showToast("Copied to clipboard");
+  showToast("Copied!");
 }
 
 function applyTheme(theme) {
@@ -269,3 +269,12 @@ $("#shareResult").onclick = async () =>
 
 initTheme();
 refreshLinks();
+
+
+// File tools
+function downloadBlob(blob,name){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function setToolOutput(id,msg){const e=$(id);e.innerHTML=msg}
+const q=$("#imageQuality"),qv=$("#imageQualityValue");if(q){q.oninput=()=>qv.textContent=q.value+"%"}
+$("#compressImage").onclick=async()=>{const f=$("#imageInput").files[0];if(!f)return showToast("Choose an image first");try{const im=new Image();im.src=URL.createObjectURL(f);await im.decode();const max=2400,scale=Math.min(1,max/Math.max(im.width,im.height));const c=document.createElement("canvas");c.width=Math.max(1,Math.round(im.width*scale));c.height=Math.max(1,Math.round(im.height*scale));c.getContext("2d").drawImage(im,0,0,c.width,c.height);const type=/png/i.test(f.type)?"image/png":"image/jpeg";const blob=await new Promise(r=>c.toBlob(r,type,Number(q.value)/100));downloadBlob(blob,(f.name.replace(/\.[^.]+$/,"")||"image")+"-compressed."+(type==="image/png"?"png":"jpg"));setToolOutput("#imageOutput","<span>Compressed: "+Math.round(blob.size/1024)+" KB</span>");showToast("Image compressed!")}catch(e){setToolOutput("#imageOutput","Conversion failed. Try another image.");showToast("Compression failed")}};
+$("#wordToPdf").onclick=async()=>{const f=$("#wordToPdfInput").files[0];if(!f)return showToast("Choose a Word file first");const out=$("#wordPdfOutput");out.textContent="Converting…";try{const result=await mammoth.extractRawText({arrayBuffer:await f.arrayBuffer()});const text=result.value||"";const {jsPDF}=window.jspdf;const pdf=new jsPDF({unit:"mm",format:"a4"});const margin=15,width=180,lineHeight=6;let y=18;for(const para of text.split(/\n+/)){const lines=pdf.splitTextToSize(para.trim(),width);if(!lines.length)continue;for(const line of lines){if(y>282){pdf.addPage();y=18}pdf.text(line,margin,y);y+=lineHeight}y+=2}pdf.save(f.name.replace(/\.docx$/i,"")+".pdf");out.textContent="Done — PDF downloaded.";showToast("Word converted!")}catch(e){console.error(e);out.textContent="Could not convert this document. Please try a valid .docx file.";showToast("Conversion failed")}};
+$("#pdfToWord").onclick=async()=>{const f=$("#pdfToWordInput").files[0];if(!f)return showToast("Choose a PDF first");const out=$("#pdfWordOutput");out.textContent="Extracting text…";try{pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";const doc=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise;const paras=[];for(let i=1;i<=doc.numPages;i++){const page=await doc.getPage(i),content=await page.getTextContent();const text=content.items.map(x=>x.str).join(" ").trim();if(text)paras.push(text)}if(!paras.length)throw new Error("No text found");const {Document,Packer,Paragraph}=window.docx;const d=new Document({sections:[{properties:{},children:paras.flatMap(t=>[new Paragraph(t),new Paragraph("")])}]});const blob=await Packer.toBlob(d);downloadBlob(blob,f.name.replace(/\.pdf$/i,"")+".docx");out.textContent="Done — Word file downloaded.";showToast("PDF converted!")}catch(e){console.error(e);out.textContent="Could not extract text from this PDF. Scanned/image-only PDFs need OCR.";showToast("Conversion failed")}};
