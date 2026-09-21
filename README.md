@@ -14,6 +14,7 @@ GitHub-ready version of the SnapURL project. The UI is kept in `src/main/resourc
 - Click counter + last-click timestamp
 - Management token hashed with SHA-256
 - JPG ↔ PNG image conversion
+- JPG/PNG → PDF conversion
 - Image compressor with target size in KB
 - Word → PDF and PDF → Word browser tools
 - Light/dark mode UI
