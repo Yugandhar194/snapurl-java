@@ -39,11 +39,6 @@
                         <div class="field"><label for="url">Destination URL <span>required</span></label><input id="url"
                                 name="url" type="url" placeholder="https://example.com/very/long/url" autocomplete="url"
                                 required></div>
-                        <div class="field"><label for="alias">Custom alias <span>optional</span></label>
-                            <div class="alias-wrap"><span class="alias-prefix">/s/</span><input id="alias" name="alias"
-                                    type="text" placeholder="my-link" minlength="4" maxlength="32"
-                                    pattern="[A-Za-z0-9_-]{4,32}"></div>
-                        </div>
                         <div class="field"><label for="title">Label <span>optional</span></label><input id="title"
                                 name="title" type="text" maxlength="120" placeholder="Portfolio website"></div>
                         <div class="field"><label for="expiry">Expiry <span>optional</span></label><select id="expiry"
@@ -56,8 +51,7 @@
                                 <option value="365">1 year</option>
                             </select></div><button class="primary-btn" id="submitBtn" type="submit">Shorten URL
                             →</button>
-                        <div class="form-note">Aliases use 4–32 letters, numbers, hyphens, or underscores. Management
-                            credentials stay in this browser.</div>
+                        <div class="form-note">Management credentials stay in this browser.</div>
                         <div class="message" id="message" role="alert"></div>
                     </form>
                     <div class="result" id="result">
@@ -84,7 +78,7 @@
                 </div>
             </section>
 
-            <section class="section tools-section" id="tools"><div class="section-head"><div><h2>Useful file tools</h2><p class="section-sub">Quick browser-side utilities — your files stay on your device.</p></div></div><div class="tool-grid"><article class="tool-card"><div class="tool-icon"><img src="/word-icon.svg" alt="Word"></div><h3>Word → PDF</h3><p>Convert a .docx document into a downloadable PDF.</p><input id="wordToPdfInput" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"><button class="small-btn" id="wordToPdf" type="button">Convert to PDF</button><div class="tool-output" id="wordPdfOutput"></div></article><article class="tool-card"><div class="tool-icon"><img src="/pdf-icon.svg" alt="PDF"></div><h3>PDF → Word</h3><p>Extract text from a PDF and create an editable .docx file.</p><input id="pdfToWordInput" type="file" accept="application/pdf"><button class="small-btn" id="pdfToWord" type="button">Convert to Word</button><div class="tool-output" id="pdfWordOutput"></div></article><article class="tool-card"><div class="tool-icon">IMG</div><h3>Image Compressor</h3><p>Reduce image size and download a compressed copy.</p><input id="imageInput" type="file" accept="image/*"><div class="tool-controls"><label>Quality <input id="imageQuality" type="range" min="20" max="95" value="75"><span id="imageQualityValue">75%</span></label></div><button class="small-btn" id="compressImage" type="button">Compress image</button><div class="tool-output" id="imageOutput"></div></article></div></section>
+            <section class="section tools-section" id="tools"><div class="section-head"><div><h2>Useful file tools</h2><p class="section-sub">Quick browser-side utilities — your files stay on your device.</p></div></div><div class="tool-grid"><article class="tool-card"><div class="tool-icon"><img src="/word-icon.svg" alt="Word"></div><h3>Word → PDF</h3><p>Convert a .docx document into a downloadable PDF.</p><input id="wordToPdfInput" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"><button class="small-btn" id="wordToPdf" type="button">Convert to PDF</button><div class="tool-output" id="wordPdfOutput"></div></article><article class="tool-card"><div class="tool-icon"><img src="/pdf-icon.svg" alt="PDF"></div><h3>PDF → Word</h3><p>Extract text from a PDF and create an editable .docx file.</p><input id="pdfToWordInput" type="file" accept="application/pdf"><button class="small-btn" id="pdfToWord" type="button">Convert to Word</button><div class="tool-output" id="pdfWordOutput"></div></article><article class="tool-card"><div class="tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img" aria-label="Camera"><path d="M8.5 5.5 10 3h4l1.5 2.5H19a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h3.5Zm3.5 3A4.5 4.5 0 1 0 12 17a4.5 4.5 0 0 0 0-9Zm0 7.2a2.7 2.7 0 1 1 0-5.4 2.7 2.7 0 0 1 0 5.4Z"/></svg></div><h3>Image Compressor</h3><p>Reduce image size and download a compressed copy.</p><input id="imageInput" type="file" accept="image/*"><div class="tool-controls"><label>Quality <input id="imageQuality" type="range" min="20" max="95" value="75"><span id="imageQualityValue">75%</span></label></div><button class="small-btn" id="compressImage" type="button">Compress image</button><div class="tool-output" id="imageOutput"></div></article></div></section>
             <section class="section">
                 <div class="section-head">
                     <div>
@@ -119,7 +113,7 @@
                 </div>
             </section>
         </main>
-        <footer><span>SnapURL v1.0 · clean-architecture Java project</span><span>Spring Boot · PostgreSQL · JPA</span>
+        <footer><span>SnapURL v1.0 © 2026, <span id="currentYear"></span> · clean-architecture Java project</span><span>Spring Boot · PostgreSQL · JPA</span>
         </footer>
     </div>
     <div class="toast" id="toast"></div>
