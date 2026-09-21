@@ -13,6 +13,9 @@ GitHub-ready version of the SnapURL project. The UI is kept in `src/main/resourc
 - Delete links
 - Click counter + last-click timestamp
 - Management token hashed with SHA-256
+- JPG ↔ PNG image conversion
+- Image compressor with target size in KB
+- Word → PDF and PDF → Word browser tools
 - Light/dark mode UI
 - Responsive dashboard
 - Repository + Service Layer + Strategy Pattern
