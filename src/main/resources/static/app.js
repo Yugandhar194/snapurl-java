@@ -55,6 +55,11 @@ function applyTheme(theme) {
   $("#themeToggle").textContent = theme === "dark" ? "☀" : "◐";
 }
 
+function initCurrentYear() {
+  const year = $("#currentYear");
+  if (year) year.textContent = new Date().getFullYear();
+}
+
 function initTheme() {
   const saved = localStorage.getItem(THEME_KEY);
   applyTheme(
@@ -231,7 +236,6 @@ $("#shortenForm").onsubmit = async (event) => {
       method: "POST",
       body: JSON.stringify({
         url: $("#url").value,
-        alias: $("#alias").value,
         title: $("#title").value,
         expiresInDays: $("#expiry").value
           ? Number($("#expiry").value)
@@ -267,6 +271,7 @@ $("#shareResult").onclick = async () =>
     ? await navigator.share({ title: "Short link", url: latestResult })
     : copyText(latestResult);
 
+initCurrentYear();
 initTheme();
 refreshLinks();
 
