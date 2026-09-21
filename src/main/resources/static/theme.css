@@ -470,3 +470,5 @@ footer {
     flex-direction: column;
   }
 }
+
+.tools-section{}.tool-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.tool-card{padding:22px;background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow-card)}.tool-icon{width:44px;height:44px;display:grid;place-items:center;border-radius:12px;background:var(--brand-soft);color:var(--brand-strong);font:800 11px var(--mono);overflow:hidden}.tool-icon img{width:44px;height:44px;display:block}.tool-card h3{margin:15px 0 7px}.tool-card p{margin:0 0 14px;color:var(--text-dim);font-size:13px;line-height:1.6}.tool-card input[type=file]{width:100%;font-size:12px;color:var(--text-dim);margin-bottom:12px}.tool-controls{margin:4px 0 14px}.tool-controls label{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--text-dim)}.tool-controls input{flex:1}.tool-output{min-height:18px;margin-top:10px;color:var(--text-faint);font:11px var(--mono)}@media(max-width:900px){.tool-grid{grid-template-columns:1fr 1fr}}@media(max-width:640px){.tool-grid{grid-template-columns:1fr}}
