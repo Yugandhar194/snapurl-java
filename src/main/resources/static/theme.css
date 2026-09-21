@@ -478,3 +478,5 @@ footer {
 @media (max-width:430px){.app-shell{padding:10px}.brand{font-size:18px}.icon-btn{width:38px;height:38px}h1{font-size:38px}.hero-copy{font-size:15px}.url-card{padding:15px;border-radius:18px}.pill{font-size:10px}.alias-prefix{padding:12px 8px;font-size:11px}.primary-btn{padding:13px}.stats-row{gap:8px}.stat{padding:14px}.section{margin:44px 0}.section h2{font-size:24px}.tool-card{border-radius:15px}.tool-actions{flex-direction:column}.tool-actions .small-btn{width:100%}footer{align-items:flex-start}}
 
 .size-input-wrap{display:flex;align-items:center;gap:8px;margin-top:8px}.size-input-wrap input{width:100%;min-width:0}.size-input-wrap span{font-size:13px;opacity:.75}.tool-controls small{display:block;margin-top:6px;font-size:11px;opacity:.7}
+
+.field-error{display:block;margin-top:5px;font-size:11px;color:#ff6b7a;min-height:15px}
