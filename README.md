@@ -48,3 +48,16 @@ Or package it with `mvn clean package` and run `java -jar target/snapurl-1.0.0.j
 
 ## Deployment
 The public demo is deployed on Hatchable. The Java/Spring Boot implementation in this repository is the source-of-truth backend implementation for local/Docker/VPS deployment.
+
+
+## Advanced browser-side utilities
+
+The SnapURL frontend now includes additional client-side workspaces:
+
+- **Excel → PDF** — sheet selection, portrait/landscape, A4/A3/Letter, normal/narrow/custom margins, and fit-to-width/fit-to-page/original scaling.
+- **Image Workspace** — multi-image capture/upload, camera capture, sorting by name/date/size, per-image renaming, resize presets, and templates including Grayscale, Black & White, High Contrast, Document Scan, ID Photo, Passport Photo, Receipt, and Notes/Document. Exports a ZIP.
+- **PDF Scale / Resize** — enlarge or reduce PDF page dimensions using a percentage control.
+- **QR Generator** — URL, PDF/document URL, vCard contact, plain text, app links, SMS, Gmail, Google Maps, location, phone and social handles including Instagram, YouTube, Snapchat, WhatsApp, LinkedIn and GitHub. QR history is kept locally in the browser.
+- **PDF Toolbox** — merge PDFs, extract selected pages, rotate pages, and export the first page to JPG.
+
+These utility features are browser-side and are designed so user files do not need to be uploaded to SnapURL for processing. A QR code for a PDF uses a public document URL; a local PDF file cannot become a portable cross-device QR payload without hosting the document somewhere.
