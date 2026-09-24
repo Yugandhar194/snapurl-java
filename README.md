@@ -21,9 +21,9 @@ GitHub-ready version of the SnapURL project. The UI is in `src/main/resources/st
 - Word → PDF
 - PDF → Word
 - Excel → PDF with sheet selection, portrait/landscape, A4/A3/Letter, normal/narrow/custom margins and fit-to-width/fit-to-page/original scaling
-- Image Workspace with multi-image upload, camera capture, resize presets, templates (Original, Grayscale, Black & White, High Contrast, Document Scan, ID Photo, Passport Photo, Receipt, Notes/Document), sorting, renaming patterns and ZIP export
+- Image Workspace with multi-image upload, camera capture, HEIC/HEIF conversion, resize presets, templates (Original, Grayscale, Black & White, High Contrast, Document Scan, ID Photo, Passport Photo, Receipt, Notes/Document), sorting, renaming patterns and ZIP export
 - PDF Scale / Resize with percentage controls
-- PDF Toolbox: Merge, Split/Extract, Reorder, Rotate, Watermark, Page Numbers and PDF → JPG ZIP export
+- PDF Toolbox: Merge, Split/Extract, Delete pages, Reorder, Rotate, raster-based Compress, Watermark, Page Numbers and PDF → JPG ZIP export
 - Responsive premium 3D-gradient utility cards and dedicated tool pages
 
 ## QR Code Generator
