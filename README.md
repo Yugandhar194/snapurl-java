@@ -2,25 +2,47 @@
 
 Live Deployed URL: https://snapurl.hatchable.site/
 
-GitHub-ready version of the SnapURL project. The UI is kept in `src/main/resources/static` and the backend is Java 17 + Spring Boot + Spring Data JPA + PostgreSQL + Flyway.
+GitHub-ready version of the SnapURL project. The UI is in `src/main/resources/static` and the backend is Java 17 + Spring Boot + Spring Data JPA + PostgreSQL + Flyway.
 
-## Features
+## Core features
 - Shorten HTTP/HTTPS URLs
 - Custom aliases (4–32 characters)
 - Random Base62 short-code generation
-- Expiry (1–365 days)
-- Enable/disable links
-- Delete links
+- Expiry, enable/disable and delete
 - Click counter + last-click timestamp
 - Management token hashed with SHA-256
-- JPG ↔ PNG image conversion
-- JPG/PNG → PDF conversion
-- Image compressor with target size in KB
-- Word → PDF and PDF → Word browser tools
-- Light/dark mode UI
-- Responsive dashboard
 - Repository + Service Layer + Strategy Pattern
-- PostgreSQL persistence and Flyway migrations.
+- PostgreSQL persistence and Flyway migrations
+
+## File & document tools
+- Image Compressor with validated 10–1000 KB target input
+- JPG ↔ PNG
+- JPG/PNG → PDF
+- Word → PDF
+- PDF → Word
+- Excel → PDF with sheet selection, portrait/landscape, A4/A3/Letter, normal/narrow/custom margins and fit-to-width/fit-to-page/original scaling
+- Image Workspace with multi-image upload, camera capture, resize presets, templates (Original, Grayscale, Black & White, High Contrast, Document Scan, ID Photo, Passport Photo, Receipt, Notes/Document), sorting, renaming patterns and ZIP export
+- PDF Scale / Resize with percentage controls
+- PDF Toolbox: Merge, Split/Extract, Reorder, Rotate, Watermark, Page Numbers and PDF → JPG ZIP export
+- Responsive premium 3D-gradient utility cards and dedicated tool pages
+
+## QR Code Generator
+Supports:
+- URL
+- PDF/document URL or uploaded PDF
+- Contact/vCard
+- Plain text
+- App/store URL
+- SMS
+- Gmail
+- Google Maps/location
+- Phone
+- Social handles: Instagram, YouTube, Snapchat, WhatsApp, GitHub, LinkedIn, Facebook and X
+- QR color, size and error-correction controls
+- Optional logo overlay
+- Local QR history
+
+Uploaded PDFs used for QR generation are stored by the backend under `data/qr-pdfs` and served from `/qr-pdfs/**`. The Spring Boot endpoint is `POST /api/qr-upload` and enforces PDF type and a 15 MB size limit.
 
 ## Run locally
 1. Start PostgreSQL: `docker compose up -d`
@@ -34,9 +56,10 @@ Or package it with `mvn clean package` and run `java -jar target/snapurl-1.0.0.j
 - `POST /api/manage`
 - `POST /api/toggle`
 - `POST /api/delete`
+- `POST /api/qr-upload`
 - `GET /api/health`
-- `GET /s/{code}` — browser-friendly short-link redirect
-- `GET /api/redirect/{code}` — API-compatible redirect
+- `GET /s/{code}`
+- `GET /api/redirect/{code}`
 
 ## Interview talking points
 - Why Repository? Keeps persistence concerns out of business logic.
@@ -45,19 +68,5 @@ Or package it with `mvn clean package` and run `java -jar target/snapurl-1.0.0.j
 - Why not microservices? A modular monolith is enough for the current scope; split services when scaling/ownership requires it.
 - Production next steps: Redis for hot redirects, rate limiting, authentication, async click events, metrics, and horizontal scaling.
 
-
 ## Deployment
 The public demo is deployed on Hatchable. The Java/Spring Boot implementation in this repository is the source-of-truth backend implementation for local/Docker/VPS deployment.
-
-
-## Advanced browser-side utilities
-
-The SnapURL frontend now includes additional client-side workspaces:
-
-- **Excel → PDF** — sheet selection, portrait/landscape, A4/A3/Letter, normal/narrow/custom margins, and fit-to-width/fit-to-page/original scaling.
-- **Image Workspace** — multi-image capture/upload, camera capture, sorting by name/date/size, per-image renaming, resize presets, and templates including Grayscale, Black & White, High Contrast, Document Scan, ID Photo, Passport Photo, Receipt, and Notes/Document. Exports a ZIP.
-- **PDF Scale / Resize** — enlarge or reduce PDF page dimensions using a percentage control.
-- **QR Generator** — URL, PDF/document URL, vCard contact, plain text, app links, SMS, Gmail, Google Maps, location, phone and social handles including Instagram, YouTube, Snapchat, WhatsApp, LinkedIn and GitHub. QR history is kept locally in the browser.
-- **PDF Toolbox** — merge PDFs, extract selected pages, rotate pages, and export the first page to JPG.
-
-These utility features are browser-side and are designed so user files do not need to be uploaded to SnapURL for processing. A QR code for a PDF uses a public document URL; a local PDF file cannot become a portable cross-device QR payload without hosting the document somewhere.
