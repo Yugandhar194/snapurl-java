@@ -24,7 +24,6 @@ GitHub-ready version of the SnapURL project. The UI is in `src/main/resources/st
 - Image Workspace with multi-image upload, camera capture, HEIC/HEIF conversion, resize presets, templates (Original, Grayscale, Black & White, High Contrast, Document Scan, ID Photo, Passport Photo, Receipt, Notes/Document), sorting, renaming patterns and ZIP export
 - PDF Scale / Resize with percentage controls
 - PDF Toolbox: Merge, Split/Extract, Delete pages, Reorder, Rotate, raster-based Compress, Watermark, Page Numbers and PDF → JPG ZIP export
-- AI PDF Workspace: browser PDF text extraction, scanned-page OCR, grounded PDF chat, summarization and document intelligence
 - Responsive premium 3D-gradient utility cards and dedicated tool pages
 
 ## QR Code Generator
@@ -58,7 +57,6 @@ Or package it with `mvn clean package` and run `java -jar target/snapurl-1.0.0.j
 - `POST /api/toggle`
 - `POST /api/delete`
 - `POST /api/qr-upload`
-- `POST /api/pdf-ai`
 - `GET /api/health`
 - `GET /s/{code}`
 - `GET /api/redirect/{code}`
@@ -68,7 +66,7 @@ Or package it with `mvn clean package` and run `java -jar target/snapurl-1.0.0.j
 - Why Strategy? Code generation can evolve without modifying the service.
 - Why a DB unique constraint? Application checks alone are unsafe under concurrency.
 - Why not microservices? A modular monolith is enough for the current scope; split services when scaling/ownership requires it.
-- Production next steps: Redis for hot redirects, rate limiting, authentication, async click events, metrics, horizontal scaling, and a configured AI provider for `/api/pdf-ai`.
+- Production next steps: Redis for hot redirects, rate limiting, authentication, async click events, metrics, horizontal scaling.
 
 ## Deployment
 The public demo is deployed on Hatchable. The Java/Spring Boot implementation in this repository is the source-of-truth backend implementation for local/Docker/VPS deployment.
