@@ -24,6 +24,10 @@ GitHub-ready version of the SnapURL project. The UI is in `src/main/resources/st
 - Image Workspace with multi-image upload, camera capture, HEIC/HEIF conversion, resize presets, templates (Original, Grayscale, Black & White, High Contrast, Document Scan, ID Photo, Passport Photo, Receipt, Notes/Document), sorting, renaming patterns and ZIP export
 - PDF Scale / Resize with percentage controls
 - PDF Toolbox: Merge, Split/Extract, Delete pages, Reorder, Rotate, raster-based Compress, Watermark, Page Numbers and PDF → JPG ZIP export
+- Audio Trimmer & Merger with per-file trim ranges and WAV export
+- Video Trimmer with browser-local start/end trimming and WebM export
+- Direct Media Downloader for direct media file URLs; platform page URLs such as YouTube are not ripped
+- Searchable Tools section with live filtering and a no-results state
 - Responsive premium 3D-gradient utility cards and dedicated tool pages
 
 ## QR Code Generator
