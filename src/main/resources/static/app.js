@@ -1,3 +1,4 @@
+function initToolSearch(){const input=document.querySelector("#toolSearch"),clear=document.querySelector("#clearToolSearch"),status=document.querySelector("#toolSearchStatus");if(!input)return;const cards=[...document.querySelectorAll("#tools .tool-card,#advanced-tools .tool-card")];const filter=()=>{const q=input.value.trim().toLowerCase();let visible=0;cards.forEach(c=>{const text=((c.querySelector("h3")?.textContent||"")+" "+(c.querySelector("p")?.textContent||"")+" "+(c.dataset.toolPage||"")).toLowerCase();const ok=!q||text.includes(q);c.hidden=!ok;if(ok)visible++});clear.hidden=!q;status.textContent=q&&!visible?"No tools found for “"+input.value.trim()+"”. Try another search.":q?visible+" tool"+(visible===1?"":"s")+" found.":""};input.addEventListener("input",filter);clear.addEventListener("click",()=>{input.value="";input.focus();filter()});filter()}
 const yearEl = document.getElementById("currentYear"); if (yearEl) yearEl.textContent = new Date().getFullYear();
 const API=(window.__HATCHABLE__&&window.__HATCHABLE__.api)||"/api";
 const STORE_KEY="snapurl.links.v1";
@@ -37,4 +38,4 @@ $("#pdfToWord").onclick=async()=>{const f=$("#pdfToWordInput").files[0];if(!f)re
 
 document.querySelectorAll(".tool-card-3d").forEach(card=>{card.addEventListener("click",e=>{if(e.target.closest("button,input,select,a"))return;card.classList.remove("card-glow");void card.offsetWidth;card.classList.add("card-glow");const page=card.dataset.toolPage;if(page)setTimeout(()=>location.href=page,120)})});
 
-document.addEventListener("DOMContentLoaded",()=>{initTheme();refreshLinks();setInterval(updateExpiryCountdowns,30000);});
+document.addEventListener("DOMContentLoaded",()=>{initTheme();initToolSearch();refreshLinks();setInterval(updateExpiryCountdowns,30000);});
