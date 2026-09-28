@@ -21,6 +21,8 @@ export default function LegacyPage({ file }) {
         document.title = source.title || "SnapURL";
         document.body.className = source.body.className;
         page.innerHTML = source.body.innerHTML;
+        const aliasInput = page.querySelector("#alias");
+        if (aliasInput) aliasInput.pattern = "[A-Za-z0-9_\\-]+";
 
         for (const original of scripts) {
           if (cancelled) return;
