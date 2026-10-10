@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { applyTheme, getPreferredTheme } from "./themePreference";
 
 export default function LegacyPage({ file }) {
   const pageRef = useRef(null);
@@ -20,9 +21,31 @@ export default function LegacyPage({ file }) {
         scripts.forEach((script) => script.remove());
         document.title = source.title || "SnapURL";
         document.body.className = source.body.className;
+        applyTheme(getPreferredTheme());
         page.innerHTML = source.body.innerHTML;
         const aliasInput = page.querySelector("#alias");
         if (aliasInput) aliasInput.pattern = "[A-Za-z0-9_\\-]+";
+        const nav = page.querySelector(".navbar, .advanced-nav, .tool-page-nav");
+        if (nav && file !== "index.html" && !nav.querySelector("#legacyThemeToggle")) {
+          const actions = document.createElement("div");
+          actions.className = "nav-actions";
+          const button = document.createElement("button");
+          button.id = "legacyThemeToggle";
+          button.className = "icon-btn";
+          button.type = "button";
+          button.setAttribute("aria-label", "Toggle theme");
+          button.title = "Toggle light/dark mode";
+          const updateLabel = () => {
+            button.textContent = document.documentElement.dataset.theme === "dark" ? "☀" : "◐";
+          };
+          button.addEventListener("click", () => {
+            applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
+            updateLabel();
+          });
+          updateLabel();
+          actions.append(button);
+          nav.append(actions);
+        }
 
         for (const original of scripts) {
           if (cancelled) return;
