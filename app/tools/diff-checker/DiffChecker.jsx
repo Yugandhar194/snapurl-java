@@ -186,7 +186,7 @@ export default function DiffChecker() {
       <header className="tool-hero">
         <div className="tool-hero-icon" aria-hidden="true">⇄</div>
         <h1>Diff Checker</h1>
-        <p>Compare text and code side by side. Your content stays in this browser.</p>
+        <p>Compare text or code side by side. Your content stays only in this browser.</p>
       </header>
 
       <section className={styles.workspace} aria-label="Diff Checker workspace">
@@ -210,7 +210,6 @@ export default function DiffChecker() {
             <button className="small-btn" type="button" onClick={() => { setOriginal(modified); setModified(original); }}>Swap</button>
             <button className="small-btn" type="button" onClick={loadSample}>Load Sample</button>
             <button className="small-btn" type="button" onClick={share}>Share</button>
-            <button className="small-btn" type="button" onClick={downloadPatch}>Download .patch</button>
             <button className="gradient-action" type="button" onClick={compare}>Compare</button>
           </div>
         </div>
@@ -238,9 +237,9 @@ export default function DiffChecker() {
             ))}
           </div>
         ) : <p className={styles.empty}>Paste both texts or load the sample, then run Compare.</p>}
-        <p className={styles.status} role="status">{message || "All comparison happens locally in your browser."}</p>
+        <p className={styles.status} role="status">{message || "All comparison stay only in your this browser."}</p>
       </section>
-      <footer className="tool-page-footer">Diff Checker · Client-side by design</footer>
+      <footer className="tool-page-footer">Diff Checker</footer>
     </main>
   );
 }
