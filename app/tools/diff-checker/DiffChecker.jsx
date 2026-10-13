@@ -1,6 +1,6 @@
 "use client";
 
-import { createTwoFilesPatch, diffLines, diffWords } from "diff";
+import { createTwoFilesPatch, diffChars, diffLines } from "diff";
 import { useEffect, useRef, useState } from "react";
 import ThemeToggle from "../../ThemeToggle";
 import styles from "./DiffChecker.module.css";
@@ -22,8 +22,8 @@ function linesOf(value) {
   return lines;
 }
 
-function wordParts(before, after, ignoreWhitespace) {
-  const parts = diffWords(before, after, { ignoreWhitespace });
+function charParts(before, after, ignoreWhitespace) {
+  const parts = diffChars(before, after, { ignoreCase: false, ignoreWhitespace });
   return {
     left: parts.filter((part) => !part.added).map((part) => ({ value: part.value, changed: part.removed })),
     right: parts.filter((part) => !part.removed).map((part) => ({ value: part.value, changed: part.added })),
@@ -48,8 +48,8 @@ function compareText(original, modified, ignoreWhitespace) {
     for (let index = 0; index < count; index += 1) {
       const before = removed[index];
       const after = added[index];
-      const words = before !== undefined && after !== undefined
-        ? wordParts(before, after, ignoreWhitespace)
+      const chars = before !== undefined && after !== undefined
+        ? charParts(before, after, ignoreWhitespace)
         : null;
       rows.push({
         kind: before === undefined ? "added" : after === undefined ? "removed" : "changed",
@@ -58,8 +58,8 @@ function compareText(original, modified, ignoreWhitespace) {
         right: after,
         leftLine: before === undefined ? null : oldLine++,
         rightLine: after === undefined ? null : newLine++,
-        leftParts: words?.left,
-        rightParts: words?.right,
+        leftParts: chars?.left,
+        rightParts: chars?.right,
       });
     }
     removed = [];

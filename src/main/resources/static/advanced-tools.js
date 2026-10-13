@@ -123,7 +123,15 @@ function initPdfResize(){
 }
 
 function initQr(){
- const type=$("#qrType"),fields=$("#qrFields"),preview=$("#qrPreview"),history=$("#qrHistory");let lastPayload="";
+ const type=$("#qrType"),typeSearch=$("#qrTypeSearch"),fields=$("#qrFields"),preview=$("#qrPreview"),history=$("#qrHistory");let lastPayload="";
+ function filterTypeOptions(){
+  const query=(typeSearch.value||"").trim().toLowerCase();
+  Array.from(type.options).forEach((option)=>{
+   const text=(option.textContent||"").toLowerCase();
+   option.hidden = !!query && !text.includes(query);
+  });
+ }
+ typeSearch.addEventListener("input", filterTypeOptions);
  const field=(id,label,type="text",ph="")=>'<label style="margin-top:10px">'+label+'<input id="'+id+'" type="'+type+'" placeholder="'+ph+'"></label>';
  const configs={
  url:field("q","URL","url","https://example.com"),
@@ -162,7 +170,28 @@ function initQr(){
   if(t==="github")return "https://github.com/"+val("handle");
   return "";
  }
- function make(){if(!window.QRCode)return toast("QR library did not load");lastPayload=payload();if(!lastPayload)return toast("Enter the QR content first");preview.innerHTML="";new QRCode(preview,{text:lastPayload,width:Number($("#qrSize").value),height:Number($("#qrSize").value),colorDark:$("#qrDark").value,colorLight:$("#qrLight").value,correctLevel:QRCode.CorrectLevel[$("#qrLevel").value]||QRCode.CorrectLevel.M});localStorage.setItem("snapurl.qr.last",JSON.stringify({type:type.value,payload:lastPayload,created:new Date().toISOString()}));renderHistory();$("#qrOutput").textContent="QR generated. Scan it to test the payload."}
+ const qrBrandMap={
+  gmail:{icon:"fa-brands fa-google", className:"gmail"},
+  gmap:{icon:"fa-solid fa-location-dot", className:"gmap"},
+  phone:{icon:"fa-solid fa-phone", className:"phone"},
+  instagram:{icon:"fa-brands fa-instagram", className:"instagram"},
+  snapchat:{icon:"fa-brands fa-snapchat", className:"snapchat"},
+  youtube:{icon:"fa-brands fa-youtube", className:"youtube"},
+  linkedin:{icon:"fa-brands fa-linkedin-in", className:"linkedin"},
+  github:{icon:"fa-brands fa-github", className:"github"},
+  whatsapp:{icon:"fa-brands fa-whatsapp", className:"whatsapp"}
+ };
+ function applyQrBrand(){
+  preview.querySelectorAll(".qr-brand-badge").forEach((badge)=>badge.remove());
+  const badgeConfig=qrBrandMap[type.value];
+  if(!badgeConfig) return;
+  const badge=document.createElement("div");
+  badge.className="qr-brand-badge "+badgeConfig.className;
+  badge.setAttribute("aria-hidden","true");
+  badge.innerHTML='<i class="'+badgeConfig.icon+'"></i>';
+  preview.appendChild(badge);
+ }
+ function make(){if(!window.QRCode)return toast("QR library did not load");lastPayload=payload();if(!lastPayload)return toast("Enter the QR content first");preview.innerHTML="";new QRCode(preview,{text:lastPayload,width:Number($("#qrSize").value),height:Number($("#qrSize").value),colorDark:$("#qrDark").value,colorLight:$("#qrLight").value,correctLevel:QRCode.CorrectLevel[$("#qrLevel").value]||QRCode.CorrectLevel.M});applyQrBrand();localStorage.setItem("snapurl.qr.last",JSON.stringify({type:type.value,payload:lastPayload,created:new Date().toISOString()}));renderHistory();$("#qrOutput").textContent="QR generated. Scan it to test the payload."}
  function renderHistory(){const h=JSON.parse(localStorage.getItem("snapurl.qr.history")||"[]");history.innerHTML=h.length?h.slice(0,8).map((x,i)=>'<div class="history-item"><span><b>'+x.type+'</b><br><span class="muted">'+x.payload.slice(0,70).replaceAll("<","&lt;")+'</span></span><button class="small-btn" data-i="'+i+'">Reuse</button></div>').join(""):'<span class="muted">Generated QR codes will appear here on this device.</span>';history.querySelectorAll("button").forEach(b=>b.onclick=()=>{const x=h[Number(b.dataset.i)];type.value=x.type;renderFields();setTimeout(()=>{const q=$("#q");if(q)q.value=x.payload;make()},0)})}
  function saveHistory(){const h=JSON.parse(localStorage.getItem("snapurl.qr.history")||"[]");h.unshift({type:type.value,payload:lastPayload,created:new Date().toISOString()});localStorage.setItem("snapurl.qr.history",JSON.stringify(h.slice(0,12)));renderHistory()}
  type.onchange=()=>{renderFields();preview.innerHTML='<span class="muted">Fill the fields and generate.</span>'};$("#qrDark").oninput=()=>lastPayload&&make();$("#qrLight").oninput=()=>lastPayload&&make();$("#qrLevel").onchange=()=>lastPayload&&make();$("#qrSize").onchange=()=>lastPayload&&make();
