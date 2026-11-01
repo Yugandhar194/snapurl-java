@@ -2,12 +2,14 @@ import { randomBytes } from "node:crypto";
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { getStore } from "@netlify/blobs";
+import { del, get, put } from "@vercel/blob";
+import { getStorageProvider } from "../storage-provider";
 
 const localDirectory = path.join(process.cwd(), ".data", "secure-shares");
 const storeName = "snapurl-secure-file-shares";
 
-function useNetlifyStore() {
-  return Boolean(process.env.NETLIFY || process.env.NETLIFY_BLOBS_CONTEXT || globalThis.netlifyBlobsContext);
+function blobPath(id) {
+  return `secure-shares/${id}.json`;
 }
 
 export function createShareId() {
@@ -22,7 +24,20 @@ export function cleanFileName(value) {
 }
 
 export async function saveShare(id, bytes, metadata) {
-  if (useNetlifyStore()) {
+  const provider = getStorageProvider();
+  if (provider === "vercel") {
+    await put(blobPath(id), JSON.stringify({
+      bytes: Buffer.from(bytes).toString("base64"),
+      metadata,
+    }), {
+      access: "private",
+      addRandomSuffix: false,
+      allowOverwrite: false,
+      contentType: "application/json",
+    });
+    return;
+  }
+  if (provider === "netlify") {
     const store = getStore(storeName);
     await store.set(id, bytes, { onlyIfNew: true, metadata });
     return;
@@ -39,7 +54,14 @@ export async function saveShare(id, bytes, metadata) {
 }
 
 export async function readShare(id) {
-  if (useNetlifyStore()) {
+  const provider = getStorageProvider();
+  if (provider === "vercel") {
+    const blob = await get(blobPath(id), { access: "private", useCache: false });
+    if (!blob || blob.statusCode !== 200) return null;
+    const record = JSON.parse(await new Response(blob.stream).text());
+    return { bytes: Buffer.from(record.bytes, "base64"), metadata: record.metadata };
+  }
+  if (provider === "netlify") {
     const store = getStore(storeName);
     const result = await store.getWithMetadata(id, { type: "arrayBuffer", consistency: "strong" });
     return result ? { bytes: new Uint8Array(result.data), metadata: result.metadata } : null;
@@ -58,7 +80,12 @@ export async function readShare(id) {
 }
 
 export async function deleteShare(id) {
-  if (useNetlifyStore()) {
+  const provider = getStorageProvider();
+  if (provider === "vercel") {
+    await del(blobPath(id), { access: "private" });
+    return;
+  }
+  if (provider === "netlify") {
     await getStore(storeName).delete(id);
     return;
   }

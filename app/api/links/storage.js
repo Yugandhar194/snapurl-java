@@ -1,16 +1,26 @@
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { getStore } from "@netlify/blobs";
+import { del, get, put } from "@vercel/blob";
+import { getStorageProvider } from "../storage-provider";
 
 const localDirectory = path.join(process.cwd(), ".data", "short-links");
 const storeName = "snapurl-short-links";
 
-function useNetlifyStore() {
-  return Boolean(process.env.NETLIFY || process.env.NETLIFY_BLOBS_CONTEXT || globalThis.netlifyBlobsContext);
+function blobPath(code) {
+  return `short-links/${code}.json`;
+}
+
+async function readVercelShortLink(code) {
+  const blob = await get(blobPath(code), { access: "private", useCache: false });
+  if (!blob || blob.statusCode !== 200) return null;
+  return JSON.parse(await new Response(blob.stream).text());
 }
 
 export async function readShortLink(code) {
-  if (useNetlifyStore()) {
+  const provider = getStorageProvider();
+  if (provider === "vercel") return readVercelShortLink(code);
+  if (provider === "netlify") {
     return getStore(storeName).get(code, { type: "json", consistency: "strong" });
   }
 
@@ -24,7 +34,22 @@ export async function readShortLink(code) {
 }
 
 export async function createShortLink(record) {
-  if (useNetlifyStore()) {
+  const provider = getStorageProvider();
+  if (provider === "vercel") {
+    try {
+      await put(blobPath(record.link.code), JSON.stringify(record), {
+        access: "private",
+        addRandomSuffix: false,
+        allowOverwrite: false,
+        contentType: "application/json",
+      });
+      return true;
+    } catch (error) {
+      if (await readVercelShortLink(record.link.code)) return false;
+      throw error;
+    }
+  }
+  if (provider === "netlify") {
     const result = await getStore(storeName).set(record.link.code, JSON.stringify(record), { onlyIfNew: true });
     return result.modified;
   }
@@ -40,7 +65,17 @@ export async function createShortLink(record) {
 }
 
 export async function writeShortLink(record) {
-  if (useNetlifyStore()) {
+  const provider = getStorageProvider();
+  if (provider === "vercel") {
+    await put(blobPath(record.link.code), JSON.stringify(record), {
+      access: "private",
+      addRandomSuffix: false,
+      allowOverwrite: true,
+      contentType: "application/json",
+    });
+    return;
+  }
+  if (provider === "netlify") {
     await getStore(storeName).set(record.link.code, JSON.stringify(record));
     return;
   }
@@ -50,7 +85,12 @@ export async function writeShortLink(record) {
 }
 
 export async function deleteShortLink(code) {
-  if (useNetlifyStore()) {
+  const provider = getStorageProvider();
+  if (provider === "vercel") {
+    await del(blobPath(code), { access: "private" });
+    return;
+  }
+  if (provider === "netlify") {
     await getStore(storeName).delete(code);
     return;
   }

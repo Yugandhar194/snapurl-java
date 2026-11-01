@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@netlify/blobs": "^11.1.4",
+    "@vercel/blob": "^2.8.2",
     "diff": "^9.0.0",
     "next": "^16.4.0",
     "react": "^19.1.0",
