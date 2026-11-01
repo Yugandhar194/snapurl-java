@@ -2,30 +2,24 @@
 
 import { useEffect, useState } from "react";
 
-const LINKS_KEY = "snapurl.local-links.v1";
-
 export default function ShortRedirect({ code }) {
   const [message, setMessage] = useState("Opening your short link…");
 
   useEffect(() => {
-    try {
-      const records = JSON.parse(localStorage.getItem(LINKS_KEY) || "[]");
-      const record = records.find((item) => item.link.code === code);
-      if (!record) throw new Error("This short link is not saved in this browser.");
-
-      const link = record.link;
-      if (!link.active) throw new Error("This short link has been disabled.");
-      if (link.expiresAt && new Date(link.expiresAt) <= new Date()) {
-        throw new Error("This short link has expired.");
+    let cancelled = false;
+    async function resolveLink() {
+      try {
+        const response = await fetch(`/api/links?code=${encodeURIComponent(code)}`, { cache: "no-store" });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || "This short link could not be opened.");
+        if (!cancelled) window.location.replace(result.destinationUrl);
+      } catch (error) {
+        if (!cancelled) setMessage(error.message || "This short link could not be opened.");
       }
-
-      link.clickCount += 1;
-      link.lastClickAt = new Date().toISOString();
-      localStorage.setItem(LINKS_KEY, JSON.stringify(records));
-      window.location.replace(link.destinationUrl);
-    } catch (error) {
-      setMessage(error.message || "This short link could not be opened.");
     }
+
+    resolveLink();
+    return () => { cancelled = true; };
   }, [code]);
 
   return (

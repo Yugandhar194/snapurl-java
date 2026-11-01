@@ -1,6 +1,6 @@
 # SnapURL
 
-SnapURL is a Next.js frontend with browser-based file tools and local-only link management. Secure File Share uses a small API to store encrypted file bytes; the passcode remains in the browser.
+SnapURL is a Next.js frontend with browser-based file tools and persistent short-link storage. Secure File Share uses a small API to store encrypted file bytes; the passcode remains in the browser.
 
 ## Run locally
 
@@ -13,10 +13,11 @@ For a production build, run `npm run build` and then `npm start`.
 
 ## Data and limitations
 
-- Short links and management state are stored in the current browser's `localStorage`. They are not shared with other browsers or devices, and clearing browser data removes them.
+- Short-link destinations are stored on the server and resolve across browsers and devices. Local development persists them under `.data/short-links/`; Netlify deployments use Netlify Blobs. The management token remains in the creating browser, so clearing browser data can remove local management access without breaking the short link.
 - File conversion and QR generation run in the browser. A PDF QR code must use a publicly reachable PDF URL; this app does not upload or host files.
-- A globally shareable URL shortener requires a storage/API service, which is intentionally not included.
+- Short-link storage must be available to the deployed server. Netlify deployments use Netlify Blobs; storage failures are reported rather than silently falling back to browser-only links.
 - SIP projections are estimates using monthly compounding and end-of-month contributions; they are not financial advice.
+- The Age & Time Calculator reports calendar age, next-birthday countdowns, and elapsed time between selected date-times.
 - Secure File Share accepts files up to 5 MB, encrypts them with AES-GCM using a passcode-derived key, and supports links expiring after 1 hour, 24 hours, or 7 days. Send the passcode separately from the link.
 - Local development stores encrypted share blobs under `.data/secure-shares/`. On Netlify, shares use Netlify Blobs. If Blob context is unavailable in a Netlify deployment, share creation fails rather than using ephemeral storage.
 - Share metadata (file name, content type, encryption salt/IV, and expiry) is not encrypted. The file contents are encrypted before upload; a lost passcode cannot be recovered.
